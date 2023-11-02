@@ -10,6 +10,8 @@ use App\Features\UserImport\Repositories\LocalUserImportRepository;
 
 final readonly class ImportUserService
 {
+    const UPSERT_CHUNK_SIZE = 1000;
+
     /**
      * @param LocalUserImportRepository $localUserImportRepository
      * @param ImportUserRepositoryInterface $importUserRepository
@@ -35,7 +37,7 @@ final readonly class ImportUserService
         }
 
         $upsertCount = 0;
-        foreach ($usersToImport->chunk(1000) as $chunk) {
+        foreach ($usersToImport->chunk(self::UPSERT_CHUNK_SIZE) as $chunk) {
             $upsertCount += $this->localUserImportRepository->upsert($chunk);
         }
 

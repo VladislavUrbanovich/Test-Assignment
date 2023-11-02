@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 final readonly class RandomUserImportRepository implements ImportUserRepositoryInterface
 {
-    const URL = 'https://randomuser.me/api/?results=20';
+    const URL = 'https://randomuser.me/api/?results=5000';
 
     /**
      * @return Collection
@@ -37,7 +37,7 @@ final readonly class RandomUserImportRepository implements ImportUserRepositoryI
             'first_name' => (string)$user['name']['first'],
             'last_name' => (string)$user['name']['last'],
             'email' => (string)$user['email'],
-            'age' => (int)$user['registered']['age'],
+            'age' => (int)$user['dob']['age'],
         ]);
     }
 }
