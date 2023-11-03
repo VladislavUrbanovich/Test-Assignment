@@ -10,6 +10,9 @@ use App\Features\UserImport\Repositories\LocalUserImportRepository;
 
 final readonly class ImportUserService
 {
+    /**
+     * Разные чанки до и включая 5к показывают примерно одинаковые результаты на upsert
+     */
     const UPSERT_CHUNK_SIZE = 1000;
 
     /**
@@ -36,6 +39,10 @@ final readonly class ImportUserService
             );
         }
 
+        /**
+         * Изначально полагал, что upsert вернет нам отдельно количество затронутых строк по вставке и обновлению
+         * Но он возвращает сумму чисел за каждую строку, где 0 - пропуск, 1 - инсерт, 2 - апдейт
+         */
         $upsertCount = 0;
         foreach ($usersToImport->chunk(self::UPSERT_CHUNK_SIZE) as $chunk) {
             $upsertCount += $this->localUserImportRepository->upsert($chunk);
